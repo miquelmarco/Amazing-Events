@@ -10,9 +10,11 @@ let app = createApp({
             filCategories: [],
             pastEvents: [],
             upComEvents: [],
-            eventoMasPorc: null,
-            eventoMenosPorc: null,
-            eventMasCap: null
+            eventoMasPorc: '',
+            eventoMenPorc: '',
+            eventoMasCapa: '',
+            segundaTabla: '',
+            terceraTabla: ''
         }
     },
     created(){
@@ -24,20 +26,16 @@ let app = createApp({
                 this.filCategories = [...new Set(this.categories)]
                 this.pastEvents = this.allEvents.filter(evento => evento.date < data.currentDate)
                 this.upComEvents = this.allEvents.filter(evento => evento.date > data.currentDate)
-                console.log(this.upComEvents)
 
-                // // primera tabla
-
-                
-
-                // // segunda tabla
-
-
-
-                // // tercera tabla
+                this.eventoMasPorc = this.altoPorcentaje(this.pastEvents)
+                this.eventoMenPorc = this.bajoPorcentaje(this.pastEvents)
+                this.eventoMasCapa = this.masCapacidad(this.allEvents)
+                this.segundaTabla = this.printSegundaTabla(this.upComEvents)
+                this.terceraTabla = this.printTerceraTabla(this.pastEvents)
             }).catch(error => console.log(error))
     },
     methods:{
+        // // funciones primera tabla
         altoPorcentaje (eventos){
             let alto = 0
             let masAlto
@@ -48,7 +46,7 @@ let app = createApp({
                     masAlto = evento
                 }
             }
-            return masAlto
+            return `${masAlto.name} with ${alto.toFixed(1)}%`
         },
         bajoPorcentaje (eventos){
             let bajo = 0
@@ -60,7 +58,7 @@ let app = createApp({
                             masBajo = evento
                 }
             }
-            return masBajo
+            return `${masBajo.name} with ${bajo.toFixed(1)}%`
         },
         masCapacidad (eventos){
             let masCap = 0
@@ -71,13 +69,111 @@ let app = createApp({
                     eventMasCap = evento
                 }
             }
-            return eventMasCap
+            return `${eventMasCap.name} with ${eventMasCap.capacity.toLocaleString()} of capacity`
         },
+        // imprimirResultados() {
+        //     let eventoMasPorc = this.altoPorcentaje(this.allEvents);
+        //     let bajoPorcentaje = this.bajoPorcentaje(this.allEvents);
+        //     let eventoMasCap = this.masCapacidad(this.pastEvents);
+
+        //     let template = `
+        //         <tr>
+        //             <td>${eventoMasPorc.name} with ${((eventoMasPorc.assistance * 100) / eventoMasPorc.capacity).toFixed(1)}%</td>
+        //             <td>${bajoPorcentaje.name} with ${((bajoPorcentaje.assistance * 100) / bajoPorcentaje.capacity).toFixed(1)}%</td>
+        //             <td>${eventoMasCap.name} with ${eventoMasCap.capacity.toLocaleString()} of capacity</td>
+        //         </tr>
+        //     `
+        //     document.getElementById("primeraTabla").innerHTML = template;
+        // },
+        // // funciones segunda tabla
+        printSegundaTabla(eventos){
+            let datosCompletos = []
+            
+            let upCategories = Array.from(new Set(eventos.map(evento => evento.category)))
+            
+            let upRevenue = []
+            for (let category of upCategories){
+                let upContador = 0
+                for (let evento of eventos){
+                    if(evento.category == category){
+                        upContador += evento.estimate * evento.price
+                    }
+                }
+                upRevenue.push(upContador)
+            }
+            
+            let porcenDeAsis = []
+            for (let category of upCategories){
+                let estimado = 0
+                let capacidad = 0
+                for(let evento of eventos){
+                    if(evento.category === category){
+                        estimado += evento.estimate
+                        capacidad += evento.capacity
+                    }
+                }
+                porcenDeAsis.push(estimado*100/capacidad)
+            }
+            
+            datosCompletos.push(upCategories, upRevenue, porcenDeAsis)
+            
+        let template = ``
+        for (let i = 0; i < datosCompletos[0].length; i++){
+            template += `
+            <tr>
+            <td>${datosCompletos[0][i]}</td>
+            <td>$${datosCompletos[1][i].toLocaleString()}</td>
+            <td>${datosCompletos[2][i].toFixed(2)}%</td>
+            </tr>
+            `
+        }
+        return template
+        },
+        printTerceraTabla(eventos){
+            let datosCompletos2 = []
+            
+            let psCategories = Array.from(new Set(eventos.map(evento => evento.category)))
+            
+            let psRevenue2 = []
+            for (let category of psCategories){
+                let psContador2 = 0
+                for (let evento of eventos){
+                    if(evento.category == category){
+                        psContador2 += evento.assistance * evento.price
+                    }
+                }
+                psRevenue2.push(psContador2)
+            }
+        
+            let porcenDeAsis2 = []
+            for (let category of psCategories){
+                let estimado = 0
+                let capacidad = 0
+                for(let evento of eventos){
+                    if(evento.category === category){
+                        estimado += evento.assistance
+                        capacidad += evento.capacity
+                    }
+                }
+                porcenDeAsis2.push(estimado*100/capacidad)
+            }
+            datosCompletos2.push(psCategories, psRevenue2, porcenDeAsis2)
+            
+            let template2 = ``
+            for (let i = 0; i < datosCompletos2[0].length; i++){
+                template2 += `
+                <tr>
+                <td>${datosCompletos2[0][i]}</td>
+                <td>$${datosCompletos2[1][i].toLocaleString()}</td>
+                <td>${datosCompletos2[2][i].toFixed(2)}%</td>
+                </tr>
+                `
+            }
+            return template2
+        }
     }
 })
 app.mount('#app')
-
-
 
 // intento v.2
 
@@ -129,19 +225,19 @@ app.mount('#app')
         
 //         // // llamado a terceraTabla + función que imprime
         
-//         let terceraTabla = document.querySelector(`#terceraTabla`)
-//         let datosTerceraTabla = printTerceraTabla(pastEvents)
-//         let template2 = ``
-//         for (let i = 0; i < datosTerceraTabla[0].length; i++){
-//             template2 += `
-//             <tr>
-//             <td>${datosTerceraTabla[0][i]}</td>
-//             <td>$${datosTerceraTabla[1][i].toLocaleString()}</td>
-//             <td>${datosTerceraTabla[2][i].toFixed(2)}%</td>
-//             </tr>
-//             `
-//         }
-//         terceraTabla.innerHTML = template2
+        // let terceraTabla = document.querySelector(`#terceraTabla`)
+        // let datosTerceraTabla = printTerceraTabla(pastEvents)
+        // let template2 = ``
+        // for (let i = 0; i < datosTerceraTabla[0].length; i++){
+        //     template2 += `
+        //     <tr>
+        //     <td>${datosTerceraTabla[0][i]}</td>
+        //     <td>$${datosTerceraTabla[1][i].toLocaleString()}</td>
+        //     <td>${datosTerceraTabla[2][i].toFixed(2)}%</td>
+        //     </tr>
+        //     `
+        // }
+        // terceraTabla.innerHTML = template2
         
 //     }).catch(error => console.log(error))
     
@@ -201,7 +297,7 @@ app.mount('#app')
 //     return eventMasCap
 // }
 
-// // // funcion para segundaTabla
+// // funcion para segundaTabla
 
 // function printSegundaTabla(eventos){
 //     let datosCompletos = []

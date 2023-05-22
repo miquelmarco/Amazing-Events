@@ -95,7 +95,11 @@
                     </tr>
                 </thead>
                 <tbody id="primeraTabla">
-                    
+                    <tr>
+                        <td>{{eventoMasPorc}}</td>
+                        <td>{{eventoMenPorc}}</td>
+                        <td>{{eventoMasCapa}}</td>
+                    </tr>
                 </tbody>
 
             </table>
@@ -108,7 +112,7 @@
                         <th class="tblsubtitle">Percentage of attendance</th>
                     </tr>
                 </thead>
-                <tbody id="segundaTabla">
+                <tbody id="segundaTabla" v-html="segundaTabla">
                     
                 </tbody>
 
@@ -122,7 +126,7 @@
                         <th class="tblsubtitle">Percentage of attendance</th>
                     </tr>
                 </thead>
-                <tbody id="terceraTabla">
+                <tbody id="terceraTabla" v-html="terceraTabla">
 
                 </tbody>
             </table>
