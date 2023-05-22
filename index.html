@@ -86,32 +86,34 @@
         <div class="mainform  text-light d-flex flex-column justify-content-center align-items-center">
             <form action="#" method="#">
                 <fieldset id="checkboxContainer"
-                class="d-flex flex-wrap mt-3 mb-3 gap-2 justify-content-center align-items-center">
-                <div id='checkboxUnit' v-for="category of filCategories"
-                class="d-flex justify-content-center align-items-center">
-                <input class="ms-1" type="checkbox" v-bind:id='category' v-model='checked' v-bind:value='category'>
-                <label v-bind:for='category'>{{category}}</label>
-            </div>
-        </fieldset>
-    </form>
-    <form class="d-flex m-3" role="search">
-        {{filtro}}
+                    class="d-flex flex-wrap mt-3 mb-3 gap-2 justify-content-center align-items-center">
+                    <div id='checkboxUnit' v-for="category of filCategories"
+                        class="d-flex justify-content-center align-items-center">
+                        <input class="ms-1" type="checkbox" v-bind:id='category' v-model='checked'
+                            v-bind:value='category'>
+                        <label v-bind:for='category'>{{category}}</label>
+                    </div>
+                </fieldset>
+            </form>
+            <form class="d-flex m-3" role="search">
+                {{filtro}}
                 <input v-model='searchInput' class="form-control me-2" id="inputBusqueda" type="search"
                     placeholder="Search" aria-label="Search">
             </form>
         </div>
 
         <!-- cards -->
-
-        <div id='cardContainer' v-if='filtrados.length != 0' v-for="evento of filtrados"
-            class="d-flex flex-wrap justify-content-center align-items-center gap-5 mt-5 mb-5">
-            <div class="card mt-3 mb-3" style="width: 18rem;">
-                <img v-bind:src='evento.image' class="card-img-top p-4" v-bind:alt='evento.name'>
-                <div class="card-body">
-                    <h5 class="card-title">{{evento.name}}</h5>
-                    <p class="cardp card-text">{{evento.description}}</p>
-                    <h6>Price: {{evento.price}} USD</h6>
-                    <a v-bind:href="`./pages/details.html?_id=${evento._id}`" class="btn btn-primary btn2">See More...</a>
+        <div class="d-flex flex-wrap justify-content-center align-items-center gap-5 mt-5 mb-5">
+            <div id='cardContainer' v-if='filtrados.length != 0' v-for="evento of filtrados">
+                <div class="card mt-3 mb-3" style="width: 18rem;">
+                    <img v-bind:src='evento.image' class="card-img-top p-4" v-bind:alt='evento.name'>
+                    <div class="card-body">
+                        <h5 class="card-title">{{evento.name}}</h5>
+                        <p class="cardp card-text">{{evento.description}}</p>
+                        <h6>Price: {{evento.price}} USD</h6>
+                        <a v-bind:href="`./pages/details.html?_id=${evento._id}`" class="btn btn-primary btn2">See
+                            More...</a>
+                    </div>
                 </div>
             </div>
         </div>

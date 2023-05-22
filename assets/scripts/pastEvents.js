@@ -34,10 +34,6 @@ let app = createApp({
 })
 app.mount('#app')
 
-
-
-
-
 // // // variables
 
 // let divGeneralPs = document.getElementById('cardContainerPe')
