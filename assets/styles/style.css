@@ -254,6 +254,11 @@ td {
     text-shadow: 1px 1px 2px black;
 }
 
+#errorMsg{
+    font-size: 3rem;
+    color: rgb(233, 34, 34);
+}
+
 /* details edit */
 
 .detailcontainer {
