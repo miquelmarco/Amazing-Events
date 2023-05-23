@@ -27,7 +27,7 @@ let app = createApp({
         filtro() {
             this.filtrados = this.allEvents.filter(evento => evento.name.toLowerCase().includes(this.searchInput.toLowerCase())
             && (this.checked.includes(evento.category) || this.checked.length == 0));
-        }
+        },
     },
 })
 app.mount('#app')
