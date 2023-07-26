@@ -120,7 +120,7 @@
                 </div>
             </div>
         </div>
-        <div v-else class="d-flex flex-wrap justify-content-center align-items-center gap-5 mt-5 mb-5">
+        <div v-if="filtrados.length == 0" class="d-flex flex-wrap justify-content-center align-items-center gap-5 mt-5 mb-5">
             <p id="errorMsg">Not your lucky day!</p>
         </div>
     </main>

@@ -57,8 +57,7 @@
     <!-- carousel -->
 
     <main id='app' class="maindetail d-flex justify-content-center align-items-center">
-        <div id='detailContainer' class="detailcontainer d-flex" v-for="evento of eventoFiltradoPorId"
-            :key="evento._id">
+        <div id='detailContainer' class="detailcontainer d-flex" v-for="evento of eventoFiltradoPorId">
             <div>
                 <img class="imgdetail object-fit-cover" v-bind:src='evento.image' v-bind:alt='evento.name'>
             </div>
